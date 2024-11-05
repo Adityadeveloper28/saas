@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import React, { use, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { EditUserProfileSchema } from "@/lib/types";
+import React, { use, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { EditUserProfileSchema } from '@/lib/types'
 import {
   Form,
   FormControl,
@@ -12,38 +12,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Loader2 } from "lucide-react";
+} from '../ui/form'
+import { Input } from '../ui/input'
+import { Button } from '../ui/button'
+import { Loader2 } from 'lucide-react'
 
 type Props = {
-  user: any;
-  onUpdate?: any;
-};
+  user: any
+  onUpdate?: any
+}
 
 const ProfileForm = ({ user, onUpdate }: Props) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const form = useForm<z.infer<typeof EditUserProfileSchema>>({
-    mode: "onChange",
+    mode: 'onChange',
     resolver: zodResolver(EditUserProfileSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: user.name,
+      email: user.email,
     },
-  });
+  })
 
   const handleSubmit = async (
     values: z.infer<typeof EditUserProfileSchema>
   ) => {
-    setIsLoading(true);
-    await onUpdate(values.name);
-    setIsLoading(false);
-  };
+    setIsLoading(true)
+    await onUpdate(values.name)
+    setIsLoading(false)
+  }
 
-  //   useEffect(() => {
-  //     form.reset({ name: user.name, email: user.email })
-  //   }, [user])
+  useEffect(() => {
+    form.reset({ name: user.name, email: user.email })
+  }, [user])
 
   return (
     <Form {...form}>
@@ -59,14 +59,16 @@ const ProfileForm = ({ user, onUpdate }: Props) => {
             <FormItem>
               <FormLabel className="text-lg">User full name</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Name" />
+                <Input
+                  {...field}
+                  placeholder="Name"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
-          disabled={true}
           control={form.control}
           name="email"
           render={({ field }) => (
@@ -94,12 +96,12 @@ const ProfileForm = ({ user, onUpdate }: Props) => {
               Saving
             </>
           ) : (
-            "Save User Settings"
+            'Save User Settings'
           )}
         </Button>
       </form>
     </Form>
-  );
-};
+  )
+}
 
-export default ProfileForm;
+export default ProfileForm

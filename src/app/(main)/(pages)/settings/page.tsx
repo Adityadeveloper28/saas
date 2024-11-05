@@ -1,11 +1,59 @@
+import ProfileForm from '@/components/forms/profile-form'
+import React from 'react'
+import ProfilePicture from './_components/profile-picture'
+import { db } from '@/lib/db'
+import { currentUser } from '@clerk/nextjs/server'
 
-import React from "react";
-import ProfileForm from "@/components/forms/profile-form";
+type Props = {}
 
-type Props = {};
+const Settings = async (props: Props) => {
+  const authUser = await currentUser()
+  if (!authUser) return null
 
-const Settings = (props: Props) => {
-    // woh
+  const user = await db.user.findUnique({ where: { clerkId: authUser.id } })
+  console.log(user)
+  const removeProfileImage = async () => {
+    'use server'
+    const response = await db.user.update({
+      where: {
+        clerkId: authUser.id,
+      },
+      data: {
+        profileImage: '',
+      },
+    })
+    return response
+  }
+
+  const uploadProfileImage = async (image: string) => {
+    'use server'
+    const id = authUser.id
+    const response = await db.user.update({
+      where: {
+        clerkId: id,
+      },
+      data: {
+        profileImage: image,
+      },
+    })
+
+    return response
+  }
+
+  const updateUserInfo = async (name: string) => {
+    'use server'
+
+    const updateUser = await db.user.update({
+      where: {
+        clerkId: authUser.id,
+      },
+      data: {
+        name,
+      },
+    })
+    return updateUser
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <h1 className="sticky top-0 z-[10] flex items-center justify-between border-b bg-background/50 p-6 text-4xl backdrop-blur-lg">
@@ -17,11 +65,19 @@ const Settings = (props: Props) => {
           <p className="text-base text-white/50">
             Add or update your information
           </p>
-          <ProfileForm/>
         </div>
+        <ProfilePicture
+          onDelete={removeProfileImage}
+          userImage={user?.profileImage || ''}
+          onUpload={uploadProfileImage}
+        />
+        <ProfileForm
+          user={user}
+          onUpdate={updateUserInfo}
+        />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings
