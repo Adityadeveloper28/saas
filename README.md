@@ -36,8 +36,42 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## npx prisma studio
+
 -- prisma studio local server
 
 ## ngrok
+
 --ngrok config add-authtoken <ngrokTOken>
---ngrok http http://localhost:8080
+--ngrok http http://localhost:3000
+
+Features -[B2C SaaS Application: A platform offering various integrations for users.]
+Google Drive Integration:
+
+-[Connect users' Google Drive accounts. Watch for changes in users' Google Drive files.]
+Slack & Discord Notifications:
+
+-[Send custom notifications via Slack and Discord.]
+Notion Integration:
+
+-[Create entries in Notion’s database from the platform.]
+Stripe Integration:
+
+-[Handle subscription payments via Stripe, based on credits consumed.]
+Node Interface:
+
+-[Redesigned with a drag-and-drop builder for automation flows.]
+Automation Flows:
+
+-[Create sequences of actions based on trigger events.]
+Mini Map:
+
+-[View workflow nodes in a mini-map.]
+Infinite Canvas:
+
+-[Use an expandable, draggable canvas to organize workflow nodes.]
+User Interface:
+
+-[Supports Light & Dark modes.Features Aceternity UI, a custom UI design.]
+Landing Page:
+
+-[Fully functioning and beautifully designed landing page for the app.]
