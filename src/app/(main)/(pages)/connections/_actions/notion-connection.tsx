@@ -83,7 +83,7 @@ export const getNotionDatabase = async (
     const response = await notion.databases.retrieve({ database_id: databaseId });
     return response;
   } catch (error) {
-    console.error("Error retrieving Notion database:", error);
+    console.error('Error retrieving Notion database:', error);
     throw error;
   }
 };
@@ -94,39 +94,30 @@ export const onCreateNewPageInDatabase = async (
   accessToken: string,
   content: string
 ) => {
-  const notion = new Client({ auth: accessToken });
+  const notion = new Client({
+    auth: accessToken,
+  })
 
-  // Log the received databaseId
-  console.log("Received databaseId:", databaseId);
-
-  // Check if databaseId is valid
-  if (!databaseId || typeof databaseId !== 'string' || databaseId.trim() === "") {
-    throw new Error("Invalid databaseId: Must be a non-empty string");
-  }
-
-  try {
-    const response = await notion.pages.create({
-      parent: {
-        type: 'database_id',
-        database_id: databaseId,
-      },
-      properties: {
-        Name: {
-          title: [
-            {
-              text: {
-                content: content,
-              },
-            },
-          ],
+  console.log(databaseId)
+  const response = await notion.pages.create({
+    parent: {
+      type: 'database_id',
+      database_id: databaseId,
+    },
+    properties: {
+      name: [
+        {
+          text: {
+            content: content,
+          },
         },
-      },
-    });
-
-    console.log("Page created successfully:", response);
-    return response;
-  } catch (error) {
-    console.error("Error creating page in Notion database:", error);
-    throw error;
+      ],
+    },
+  })
+  if (response) {
+    return response
   }
-};
+}
+
+
+

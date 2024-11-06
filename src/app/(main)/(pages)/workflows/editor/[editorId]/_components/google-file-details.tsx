@@ -8,13 +8,14 @@ type Props = {
   title: string
   gFile: any
 }
+
 const isGoogleFileNotEmpty = (file: any): boolean => {
   return Object.keys(file).length > 0 && file.kind !== ''
 }
 
 const GoogleFileDetails = ({ gFile, nodeConnection, title }: Props) => {
   if (!isGoogleFileNotEmpty(gFile)) {
-    return null
+    return <div>No file data available</div> // Fallback message if no file details
   }
 
   const details = ['kind', 'name', 'mimeType']

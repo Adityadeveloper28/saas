@@ -13,26 +13,57 @@ const GoogleDriveFiles = (props: Props) => {
   const [loading, setLoading] = useState(false)
   const [isListening, setIsListening] = useState(false)
 
+  // Function to request Google Drive data
   const reqGoogle = async () => {
     setLoading(true)
-    const response = await axios.get('/api/drive-activity')
-    if (response) {
-      toast.message(response.data)
-      setLoading(false)
-      setIsListening(true)
+    try {
+      const response = await axios.get('/api/drive-activity')
+
+      // Check if response contains files
+      if (response?.data?.files?.length > 0) {
+        toast.success('Files found')
+        setIsListening(true) // Set listening state to true after the request
+      } else {
+        toast.error('No files found in Google Drive') // Show specific error if no files
+      }
+    } catch (error) {
+      console.error('Error fetching Google Drive data:', error)
+      if (axios.isAxiosError(error)) {
+        console.error(error.response?.data); // Log the response data for better insight
+        toast.error(`Axios Error: ${error.response?.data?.message || error.message}`)
+      } else {
+        toast.error('Failed to fetch files') // Show generic error message
+      }
+    } finally {
+      setLoading(false) // Reset loading state
     }
-    setIsListening(false)
   }
 
+  // Function to check if listener is active
   const onListener = async () => {
-    const listener = await getGoogleListener()
-    if (listener?.googleResourceId !== null) {
-      setIsListening(true)
+    try {
+      const listener = await getGoogleListener()
+      if (listener?.googleResourceId) {
+        setIsListening(true) // Set to true if listener is active
+      } else {
+        setIsListening(false) // Set to false if no listener
+      }
+    } catch (error) {
+      console.error('Error checking listener:', error)
+      toast.error('Error checking listener status') // Handle any error during listener check
     }
   }
 
+  // Effect to check the listener status on mount
   useEffect(() => {
     onListener()
+
+    // Re-check the listener status every 5 seconds
+    const intervalId = setInterval(() => {
+      onListener()
+    }, 5000); // Check every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on component unmount
   }, [])
 
   return (
@@ -46,9 +77,8 @@ const GoogleDriveFiles = (props: Props) => {
       ) : (
         <Button
           variant="outline"
-          {...(!loading && {
-            onClick: reqGoogle,
-          })}
+          onClick={!loading ? reqGoogle : undefined} // Disable the button when loading
+          disabled={loading}
         >
           {loading ? (
             <div className="absolute flex h-full w-full items-center justify-center">

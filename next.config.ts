@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "ucarecdn.com",
       },
+      {
+        protocol: "https",
+        hostname: "aditya-singh-portfolio.vercel.app", // Add this line
+      },
     ],
   },
   server: {
