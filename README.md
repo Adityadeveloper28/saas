@@ -44,6 +44,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 --ngrok config add-authtoken <ngrokTOken>
 --ngrok http http://localhost:3000
 
+
+https://github.com/user-attachments/assets/015d6363-f405-44f3-9f64-8d202aac9067
+
+
 Features -[B2C SaaS Application: A platform offering various integrations for users.]
 Google Drive Integration:
 
